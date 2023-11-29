@@ -34,6 +34,3 @@ def login():
 
 login()
 
-print("Number of arguments:", len(sys.argv)) #for debugging
-print("Arguments:", sys.argv) #for debugging
-

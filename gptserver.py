@@ -1,17 +1,16 @@
-import hashlib
 import json
 import socket
 import sqlite3
 import threading
 
 
-# Function to check if a given username and hashed password are valid
-def is_valid_login(username, hashed_password):
+# Function to check if a given username and password are valid
+def is_valid_login(username, password):
     conn = sqlite3.connect('a.db')
     cursor = conn.cursor()
 
-    # Check if the provided username and hashed password match any entry in the database
-    cursor.execute('SELECT * FROM login WHERE username = ? AND password = ?', (username, hashed_password))
+    # Check if the provided username and password match any entry in the database
+    cursor.execute('SELECT * FROM login WHERE username = ? AND password = ?', (username, password))
     result = cursor.fetchone()
 
     conn.close()
@@ -29,10 +28,7 @@ def handle_client(client_socket):
             username = data['username']
             password = data['password']
 
-            # Hash the password using hashlib
-            hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
-
-            if is_valid_login(username, hashed_password):
+            if is_valid_login(username, password):
                 response = {'message': 'Login successful'}
             else:
                 response = {'error': 'Invalid username or password'}
